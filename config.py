@@ -1,5 +1,6 @@
 import os
 import json
+import tempfile
 from firebase_admin import credentials
 from dotenv import load_dotenv
 
@@ -33,7 +34,14 @@ GEMINI_MODEL = os.getenv('GEMINI_MODEL')
 GEMINI_BASE_URL = os.getenv('GEMINI_BASE_URL')
 
 # Cargar las credenciales de Firebase desde un secreto
+FIREBASE_CREDENTIALS_JSON = os.getenv('FIREBASE_CREDENTIALS_JSON')
 if FIREBASE_CREDENTIALS_JSON:
-    cred = credentials.Certificate(json.loads(FIREBASE_CREDENTIALS_JSON))
+    # Crear un archivo temporal para las credenciales
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        temp_file.write(FIREBASE_CREDENTIALS_JSON.encode())
+        temp_file_path = temp_file.name
+
+    # Usar el archivo temporal para inicializar las credenciales
+    cred = credentials.Certificate(temp_file_path)
 else:
     raise ValueError("La variable de entorno FIREBASE_CREDENTIALS_JSON no está configurada.")

@@ -1,4 +1,6 @@
 import os
+import json
+from firebase_admin import credentials
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,3 +31,9 @@ GOOGLE_TASKS_ID = os.getenv('GOOGLE_TASKS_ID')
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 GEMINI_MODEL = os.getenv('GEMINI_MODEL')
 GEMINI_BASE_URL = os.getenv('GEMINI_BASE_URL')
+
+# Cargar las credenciales de Firebase desde un secreto
+if FIREBASE_CREDENTIALS_JSON:
+    cred = credentials.Certificate(json.loads(FIREBASE_CREDENTIALS_JSON))
+else:
+    raise ValueError("La variable de entorno FIREBASE_CREDENTIALS_JSON no está configurada.")

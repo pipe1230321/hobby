@@ -1,8 +1,8 @@
 import logging
 from telegram import Update, ForceReply
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-from asistente_telegram.config import TELEGRAM_TOKEN
-from asistente_telegram.controllers import firebase_controller, sheets_controller, calendar_controller, tasks_controller, gemini_controller, voice_controller, notas_controller
+from config import TELEGRAM_TOKEN
+from controllers import firebase_controller, sheets_controller, calendar_controller, tasks_controller, gemini_controller, voice_controller, notas_controller
 from utils import helpers
 import os
 

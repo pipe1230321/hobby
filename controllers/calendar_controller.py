@@ -1,10 +1,17 @@
 # Controlador de Google Calendar
 from googleapiclient.discovery import build
 from google.oauth2.service_account import Credentials
+import os
+import json
 from config import GOOGLE_SHEETS_CREDENTIALS_JSON, GOOGLE_CALENDAR_ID
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
-creds = Credentials.from_service_account_file(GOOGLE_SHEETS_CREDENTIALS_JSON, scopes=SCOPES)
+
+# En lugar de from_service_account_file, usamos from_service_account_info
+# parseando el JSON que está en la variable GOOGLE_SHEETS_CREDENTIALS_JSON
+info = json.loads(GOOGLE_SHEETS_CREDENTIALS_JSON)
+creds = Credentials.from_service_account_info(info, scopes=SCOPES)
+
 service = build('calendar', 'v3', credentials=creds)
 
 def crear_evento(summary, start, end, description=None):

@@ -1,21 +1,25 @@
-# Controlador de Google Sheets
-import gspread
+import os
 import json
+import gspread
 from google.oauth2.service_account import Credentials
-from config import GOOGLE_SHEETS_CREDENTIALS_JSON, GOOGLE_SHEETS_ID
 
+# Ámbitos para Google Sheets
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
-# Convertimos el contenido JSON en un diccionario Python
-info = json.loads(GOOGLE_SHEETS_CREDENTIALS_JSON)
+# Obtener JSON de la variable de entorno
+json_str = os.getenv('GOOGLE_SHEETS_CREDENTIALS_JSON')
 
-# Creamos las credenciales usando el diccionario de la cuenta de servicio
+# Convertir el string JSON a diccionario Python
+info = json.loads(json_str)
+
+# Crear credenciales a partir del diccionario
 creds = Credentials.from_service_account_info(info, scopes=SCOPES)
 
-# Autorizamos gspread con las credenciales creadas
+# Autorizar gspread con las credenciales
 gc = gspread.authorize(creds)
 
-# Abrimos la hoja de cálculo por ID
+# Abrir la hoja de cálculo por ID, que también debe estar en variable de entorno
+GOOGLE_SHEETS_ID = os.getenv('GOOGLE_SHEETS_ID')
 sheet = gc.open_by_key(GOOGLE_SHEETS_ID)
 
 def registrar_movimiento_sheet(fecha, categoria, monto, descripcion):
